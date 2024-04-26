@@ -1,0 +1,80 @@
+﻿@using BarangayInformationManagement.Models.Dtos
+@using BarangayInformationManagement.Services.Interface
+@inject IAuthService AuthService
+@inject ISnackbar Snackbar
+
+
+<MudDialog DisableSidePadding="true">
+    <DialogContent>
+        <EditForm Model="admin" OnValidSubmit="RegisterOnClick">
+            <DataAnnotationsValidator />
+            <MudText Typo="Typo.h4" Class="ms-5"><b>Registration</b></MudText>
+            <MudText Typo="Typo.subtitle2" Class="ms-5">It's quick and easy.</MudText>
+            <MudDivider DividerType="DividerType.FullWidth" Class="mt-3 mb-3" />
+            <MudContainer Fixed="true" Style="max-height: 550px; overflow-y: scroll" Class="p-0 m-0">
+                <MudTextField @bind-Value="admin.name" Label="Fullname" Variant="Variant.Outlined"
+                              For="@(() => admin.name)"></MudTextField>
+                <MudTextField @bind-Value="admin.email" Label="Barangay Email" For="@(() => admin.email)" Class="my-5"
+                              Variant="Variant.Outlined" InputType="InputType.Text"></MudTextField>
+                <MudTextField @bind-Value="admin.password" Label="Password" Variant="Variant.Outlined" Adornment="Adornment.End"
+                              InputType="@PasswordInput" AdornmentIcon="@PasswordInputIcon" For="@(() => admin.password)"
+                              OnAdornmentClick="ShowPasswordOnClick" AdornmentAriaLabel="Show Password" Class="mb-3">
+                </MudTextField>
+            </MudContainer>
+            <MudContainer Class="mb-4 mt-3">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                           Size="Size.Large" ButtonType="ButtonType.Submit">Register</MudButton>
+            </MudContainer>
+        </EditForm>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance dialog { get; set; }
+    AdminInfoModel admin = new AdminInfoModel();
+
+    async Task RegisterOnClick()
+    {
+        var response = await AuthService.Register(admin);
+        if (response.isSuccess)
+        {
+            dialog.Close(DialogResult.Ok(true));
+
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+            Snackbar.Add(response.successMessage, Severity.Success);
+
+            StateHasChanged();
+        }
+
+        if (response.isError)
+        {
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+            Snackbar.Add(response.errorMessage, Severity.Error);
+        }
+    }
+
+    #region ShowPassword
+
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void ShowPasswordOnClick()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+
+    #endregion
+
+}

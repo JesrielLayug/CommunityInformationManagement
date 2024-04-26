@@ -1,0 +1,14 @@
+﻿@using BarangayInformationManagement.Services.Interface
+@inject IAuthService AuthService
+
+<MudNavMenu Class="px-3" Color="Color.Primary" Rounded="true">
+        <MudNavLink Href="/" Match="NavLinkMatch.Prefix">Dashboard</MudNavLink>
+        <MudNavLink Href="/servers" Match="NavLinkMatch.Prefix">Servers</MudNavLink>
+        <MudNavLink Href="/billing" Match="NavLinkMatch.Prefix">Billing</MudNavLink>
+        <MudNavGroup Title="Settings" Expanded="true">
+            <MudNavLink Href="/users" Match="NavLinkMatch.Prefix">Users</MudNavLink>
+            <MudNavLink Href="/security" Match="NavLinkMatch.Prefix">Security</MudNavLink>
+        </MudNavGroup>
+        <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
+        <MudNavLink @onclick="@(() => AuthService.Logout())" Match="NavLinkMatch.Prefix">Logout</MudNavLink>
+</MudNavMenu>

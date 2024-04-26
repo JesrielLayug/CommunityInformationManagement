@@ -1,0 +1,81 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject NavigationManager NavigationManager 
+
+<MudThemingProvider  Theme="@MyCustomTheme"/>
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<AuthorizeView>
+    <Authorized>
+        <MudLayout>
+            <MudAppBar Elevation="25" Fixed="true">
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="DrawerToggle" />
+                <MudText Typo="Typo.h5" Style="font-weight: 600; font-size: 20px">CIM SYSTEM</MudText>
+                <MudSpacer />
+            </MudAppBar>
+            <MudDrawer ClipMode="DrawerClipMode.Docked" @bind-Open="@_drawerOpen" Breakpoint="@Breakpoint.Md" Elevation="25" Variant="@DrawerVariant.Responsive" PreserveOpenState="true">
+                <MudPaper Class="py-3" Elevation="0">
+                    <NavMenu />
+                </MudPaper>
+            </MudDrawer>
+            <MudMainContent>
+                <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+                    @Body
+                </MudContainer>
+            </MudMainContent>
+        </MudLayout>
+    </Authorized>
+    <NotAuthorized>
+        <MudLayout>
+            <MudAppBar Elevation="1">
+                    <MudText Typo="Typo.h5" Style="font-weight: 600; font-size: 20px">CIM SYSTEM</MudText>
+                    <MudSpacer />
+                    <MudNavLink @onclick="@(() => NavigationManager.NavigateTo("/login"))" Match="NavLinkMatch.Prefix">Login</MudNavLink>
+            </MudAppBar>
+            <MudMainContent>
+                <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+                    @Body
+                </MudContainer>
+            </MudMainContent>
+        </MudLayout>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private bool _drawerOpen = true;
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    MudTheme MyCustomTheme = new MudTheme()
+    {
+        Typography = new Typography()
+        {
+            Default = new Default()
+            {
+                FontFamily = new[] { "Inter", "Helvetica", "Arial", "sans-serif" }
+            }
+        },
+
+        Palette = new Palette()
+        {
+            Primary = "#1A54E8",
+            Background = "#0A0A0A",
+            Surface = "#171717",
+            TextPrimary = "#FFFFFF",
+            AppbarBackground = "#171717",
+            AppbarText = "#FFFFFF",
+            DrawerBackground = "#171717",
+        },
+
+        LayoutProperties = new LayoutProperties
+        {
+            DrawerWidthLeft = "280px",   
+        }
+
+    };
+}

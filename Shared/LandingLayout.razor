@@ -1,0 +1,54 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
+
+<MudThemingProvider Theme="@MyCustomTheme"/>
+<MudDialogProvider  />
+<MudSnackbarProvider  />
+
+<AuthorizeView>
+    <NotAuthorized>
+        <MudLayout>
+            <MudAppBar Elevation="1">
+                <MudText Typo="Typo.h5" Style="font-weight: 600; font-size: 20px">CIM SYSTEM</MudText>
+                <MudSpacer />
+            </MudAppBar>
+            <MudMainContent>
+                <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+                    @Body
+                </MudContainer>
+            </MudMainContent>
+        </MudLayout>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code{
+    MudTheme MyCustomTheme = new MudTheme()
+        {
+            Typography = new Typography()
+            {
+                Default = new Default()
+                {
+                    FontFamily = new[] { "Inter", "Helvetica", "Arial", "sans-serif" }
+                }
+            },
+
+            Palette = new Palette()
+            {
+                Primary = "#1A54E8",
+                Background = "#0A0A0A",
+                Surface = "#171717",
+                TextPrimary = "#FFFFFF",
+                AppbarBackground = "#171717",
+                AppbarText = "#FFFFFF",
+                DrawerBackground = "#171717",
+                Divider = "#A6A6A6"
+            },
+
+            LayoutProperties = new LayoutProperties
+            {
+                DrawerWidthLeft = "280px",
+            }
+        };
+}

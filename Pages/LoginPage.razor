@@ -1,0 +1,87 @@
+﻿@page "/login"
+@using BarangayInformationManagement.Models.Dtos
+@using BarangayInformationManagement.Services.Interface
+@layout LandingLayout
+@inject IDialogService DialogService
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+
+<MudGrid Justify="Justify.Center" Class="d-sm-flex align-center justify-center mt-16 pt-16">
+    <MudItem xs="12" sm="6">
+        <MudContainer MaxWidth="MaxWidth.Large" Class="d-flex flex-column my-4">
+            <MudText Typo="Typo.h1" Align="Align.Center" Class="mb-4" Style="font-size: 65px; font-weight:900 !important; color: white">CIM System</MudText>
+            <MudText Typo="Typo.h6" Style="font-size: 30px" Align="Align.Center">Cultivating Community Cohesion: Information Management at Your Fingertips</MudText>
+        </MudContainer>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+            <MudPaper Class="pa-5 ma-2 d-flex flex-column justify-center" Elevation="25">
+                <EditForm Model="@Admin" OnValidSubmit="LoginOnClick">
+                    <DataAnnotationsValidator />
+                    <MudText Typo="Typo.h4" Align="Align.Center" Class="mt-4"><b>SIGN IN</b></MudText>
+                    <MudText Align="Align.Center" Class="mb-4 mt-1" Typo="Typo.subtitle2" Style="color: #A6A6A6">Entry Point: Access Control for Community</MudText>
+
+                    <MudTextField @bind-Value="Admin.email" Label="Barangay Email" Variant="Variant.Outlined" Required="true" RequiredError="Email is required"
+                                  Class="mb-4 mt-3" For="@(() => Admin.email)" InputType="InputType.Text"></MudTextField>
+                    <MudTextField @bind-Value="Admin.password" Label="Password" Variant="Variant.Outlined" Adornment="Adornment.End" Required="true" RequiredError="Email is required"
+                                  InputType="@PasswordInput" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ShowPasswordOnClick"
+                                  AdornmentAriaLabel="Show Password" Class="mb-2" For="@(() => Admin.password)"></MudTextField>
+
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Class="mb-4 mt-3"
+                               Size="Size.Large" ButtonType="ButtonType.Submit">Login</MudButton>
+                </EditForm>
+                <MudLink Style="color: #A6A6A6 !important">Forgot password?</MudLink>
+                <MudDivider DividerType="DividerType.Middle" Class="my-4" />
+
+                <MudContainer MaxWidth="MaxWidth.ExtraSmall" Class="d-flex justify-center">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="OpenRegisterForm"
+                               Class="mt-1" Size="Size.Large" ButtonType="ButtonType.Button">Create new account</MudButton>
+                </MudContainer>
+            </MudPaper>
+        </MudContainer>
+
+    </MudItem>
+</MudGrid>
+
+@code {
+    AdminLoginModel Admin = new AdminLoginModel();
+    async Task LoginOnClick(EditContext context)
+    {
+        var response = await AuthService.Login(Admin);
+        if (response.isSuccess)
+            NavigationManager.NavigateTo("/"); 
+    }
+
+    async Task OpenRegisterForm()
+    {
+        Console.WriteLine("Hello");
+        var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, NoHeader = true };
+        DialogService.Show<RegisterPage>("Register", options);
+    }
+
+    #region ShowPassword
+
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void ShowPasswordOnClick()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+
+    #endregion
+}
