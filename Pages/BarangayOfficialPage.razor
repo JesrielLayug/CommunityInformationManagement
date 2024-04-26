@@ -1,0 +1,19 @@
+﻿@page "/"
+@using BarangayInformationManagement.Components.BarangayOfficial
+@inject IDialogService DialogService
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-16 px-16">
+    <div class="d-flex">
+        <MudText Typo="Typo.h6" Style="color: white">Barangay Officials</MudText>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" OnClick="OpenEditor" StartIcon="@Icons.Material.Filled.AddCircleOutline" Color="Color.Primary">Official</MudButton>
+    </div>
+</MudContainer>
+
+@code {
+    void OpenEditor()
+    {
+        var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, CloseButton=false, NoHeader=true };
+        DialogService.Show<EditorDialog>("Barangay Official", options);
+    }
+}

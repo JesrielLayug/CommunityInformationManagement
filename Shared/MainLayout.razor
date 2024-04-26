@@ -7,7 +7,7 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<AuthorizeView>
+<AuthorizeView Roles="Admin">
     <Authorized>
         <MudLayout>
             <MudAppBar Elevation="25" Fixed="true">
@@ -32,7 +32,7 @@
             <MudAppBar Elevation="1">
                     <MudText Typo="Typo.h5" Style="font-weight: 600; font-size: 20px">CIM SYSTEM</MudText>
                     <MudSpacer />
-                    <MudNavLink @onclick="@(() => NavigationManager.NavigateTo("/login"))" Match="NavLinkMatch.Prefix">Login</MudNavLink>
+                    <MudLink @onclick="@(() => NavigationManager.NavigateTo("/login"))" Match="NavLinkMatch.Prefix">Login</MudLink>
             </MudAppBar>
             <MudMainContent>
                 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
@@ -63,13 +63,15 @@
 
         Palette = new Palette()
         {
-            Primary = "#1A54E8",
-            Background = "#0A0A0A",
-            Surface = "#171717",
+            Primary = "#1C64F2",
+            Secondary = "#2C313D",
+            Background = "#1A202C",
+            Surface = "#2C313D",
             TextPrimary = "#FFFFFF",
-            AppbarBackground = "#171717",
+            AppbarBackground = "#2C313D",
             AppbarText = "#FFFFFF",
-            DrawerBackground = "#171717",
+            DrawerBackground = "#2C313D",
+            BackgroundGrey = "#2C313D"
         },
 
         LayoutProperties = new LayoutProperties

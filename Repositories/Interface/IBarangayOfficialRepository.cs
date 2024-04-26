@@ -8,5 +8,6 @@ namespace BarangayInformationManagement.Repositories.Interface
         Task Update(string id, BarangayOfficialModel barangayOfficial);
         Task Delete(string id);
         Task<BarangayOfficialModel> Get(string id);
+        Task<IEnumerable<BarangayOfficialModel>> GetAll();
     }
 }

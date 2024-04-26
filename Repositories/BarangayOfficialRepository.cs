@@ -34,5 +34,10 @@ namespace BarangayInformationManagement.Repositories
         {
             await barangayOfficials.ReplaceOneAsync(x => x.id == id, barangayOfficial);
         }
+
+        public async Task<IEnumerable<BarangayOfficialModel>> GetAll()
+        {
+            return await barangayOfficials.Find(x => true).ToListAsync();
+        }
     }
 }

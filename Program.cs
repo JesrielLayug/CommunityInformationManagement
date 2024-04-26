@@ -36,6 +36,9 @@ namespace BarangayInformationManagement
             builder.Services.AddScoped<IAdminRepository, AdminRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+            
+            builder.Services.AddScoped<IBarangayOfficialRepository, BarangayOfficialRepository>();
+            builder.Services.AddScoped<IBarangayOfficialService , BarangayOfficialService>();
 
             builder.Services.AddMudServices();
 

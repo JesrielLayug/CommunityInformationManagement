@@ -12,5 +12,7 @@ namespace BarangayInformationManagement.Models.Domains
         public string chairmanship { get; set; }
         public string position { get; set; }
         public string status { get; set; }
+        public DateTime term_start { get; set; }
+        public DateTime term_end { get; set; }
     }
 }
